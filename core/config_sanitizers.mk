@@ -367,3 +367,9 @@ ifneq ($(my_sanitize_diag),)
     endif
   endif
 endif
+
+ifndef LOCAL_IS_HOST_MODULE
+  ifeq ($(my_clang),true)
+    my_cflags += -fsanitize=local-init
+  endif
+endif
