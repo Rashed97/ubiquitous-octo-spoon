@@ -47,6 +47,7 @@ PRODUCT_PACKAGES += \
     Launcher3QuickStep \
     ManagedProvisioning \
     MtpDocumentsProvider \
+    offline-calendar \
     PacProcessor \
     libpac \
     PrintSpooler \
