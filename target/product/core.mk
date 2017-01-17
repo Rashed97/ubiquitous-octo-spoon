@@ -50,6 +50,7 @@ PRODUCT_PACKAGES += \
     offline-calendar \
     PacProcessor \
     libpac \
+    PdfViewer \
     PrintSpooler \
     PrintRecommendationService \
     ProxyHandler \
