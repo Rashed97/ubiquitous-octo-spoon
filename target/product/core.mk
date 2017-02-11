@@ -53,6 +53,7 @@ PRODUCT_PACKAGES += \
     PdfViewer \
     PrintSpooler \
     PrintRecommendationService \
+    privacy-friendly-netmonitor \
     ProxyHandler \
     QuickSearchBox \
     SecureElement \
