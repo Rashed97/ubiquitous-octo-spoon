@@ -156,6 +156,9 @@ Usage:  ota_from_target_files [flags] input_target_files output_ota_package
       ones. Should only be used if caller knows it's safe to do so (e.g. all the
       postinstall work is to dexopt apps and a data wipe will happen immediately
       after). Only meaningful when generating A/B OTAs.
+
+  --serialno <string>
+      Specify a serialno restriction.
 """
 
 from __future__ import print_function
@@ -207,6 +210,7 @@ OPTIONS.payload_signer_args = []
 OPTIONS.extracted_input = None
 OPTIONS.key_passwords = []
 OPTIONS.skip_postinstall = False
+OPTIONS.serialno = None
 
 
 METADATA_NAME = 'META-INF/com/android/metadata'
@@ -741,6 +745,9 @@ def WriteFullOTAPackage(input_zip, output_file):
       info_dict=OPTIONS.info_dict)
 
   assert HasRecoveryPatch(input_zip)
+
+  if OPTIONS.serialno is not None:
+      metadata["serialno"] = OPTIONS.serialno
 
   # Assertions (e.g. downgrade check, device properties check).
   ts = target_info.GetBuildProp("ro.build.date.utc")
@@ -1343,6 +1350,9 @@ def WriteBlockIncrementalOTAPackage(target_zip, source_zip, output_file):
   else:
     staging_file = output_file
 
+  if OPTIONS.serialno is not None:
+      metadata["serialno"] = OPTIONS.serialno
+
   output_zip = zipfile.ZipFile(
       staging_file, "w", compression=zipfile.ZIP_DEFLATED)
 
@@ -1701,6 +1711,9 @@ def WriteABOTAPackageWithBrilloScript(target_file, output_file,
   # Metadata to comply with Android OTA package format.
   metadata = GetPackageMetadata(target_info, source_info)
 
+  if OPTIONS.serialno is not None:
+      metadata["serialno"] = OPTIONS.serialno
+
   if OPTIONS.skip_postinstall:
     target_file = GetTargetFilesZipWithoutPostinstallConfig(target_file)
 
@@ -1830,6 +1843,8 @@ def main(argv):
       OPTIONS.extracted_input = a
     elif o == "--skip_postinstall":
       OPTIONS.skip_postinstall = True
+    elif o == "--serialno":
+      OPTIONS.serialno = a
     else:
       return False
     return True
@@ -1860,6 +1875,7 @@ def main(argv):
                                  "payload_signer_args=",
                                  "extracted_input_target_files=",
                                  "skip_postinstall",
+                                 "serialno=",
                              ], extra_option_handler=option_handler)
 
   if len(args) != 2:
