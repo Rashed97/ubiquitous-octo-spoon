@@ -64,33 +64,14 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     dalvik.vm.image-dex2oat-Xmx=64m \
     dalvik.vm.dex2oat-Xms=64m \
     dalvik.vm.dex2oat-Xmx=512m \
-    dalvik.vm.usejit=true \
-    dalvik.vm.usejitprofiles=true \
     dalvik.vm.dexopt.secondary=true \
-    dalvik.vm.appimageformat=lz4
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.dalvik.vm.native.bridge=0
-
-# Different dexopt types for different package update/install times.
-# On eng builds, make "boot" reasons only extract for faster turnaround.
-ifeq (eng,$(TARGET_BUILD_VARIANT))
-    PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-        pm.dexopt.first-boot=extract \
-        pm.dexopt.boot=extract
-else
-    PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-        pm.dexopt.first-boot=quicken \
-        pm.dexopt.boot=verify
-endif
-
-# The install filter is speed-profile in order to enable the use of
-# profiles from the dex metadata files. Note that if a profile is not provided
-# or if it is empty speed-profile is equivalent to (quicken + empty app image).
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    pm.dexopt.install=speed-profile \
-    pm.dexopt.bg-dexopt=speed-profile \
-    pm.dexopt.ab-ota=speed-profile \
+    dalvik.vm.appimageformat=lz4 \
+    ro.dalvik.vm.native.bridge=0 \
+    pm.dexopt.first-boot=speed \
+    pm.dexopt.boot=speed \
+    pm.dexopt.install=speed \
+    pm.dexopt.bg-dexopt=speed \
+    pm.dexopt.ab-ota=speed \
     pm.dexopt.inactive=verify \
     pm.dexopt.shared=speed
 
