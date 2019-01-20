@@ -339,6 +339,7 @@ ifeq ($(LOCAL_IS_HOST_MODULE)$(LOCAL_IS_AUX_MODULE),)
     ifeq ($(filter unsigned-integer-overflow signed-integer overflow integer,$(my_sanitize_diag)),)
       ifeq ($(filter cfi,$(my_sanitize_diag)),)
         ifeq ($(filter address,$(my_sanitize)),)
+          my_cflags += -fsanitize-minimal-runtime
           my_cflags += -fno-sanitize-trap=integer
           my_cflags += -fno-sanitize-recover=integer
         endif
